@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>公司大小周日历-ikun定制版</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
+
+  :root {
+    --bg-primary: #f0f4f8;
+    --bg-card: #ffffff;
+    --text-primary: #1a202c;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+    --border-light: #e2e8f0;
+    --accent-blue: #3b82f6;
+    --accent-blue-light: #eff6ff;
+    --color-work: #3b82f6;
+    --color-weekend: #94a3b8;
+    --color-holiday: #f59e0b;
+    --color-holiday-bg: #fffbeb;
+    --color-adjust: #f97316;
+    --color-adjust-bg: #fff7ed;
+    --color-today: #8b5cf6;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans SC', 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #e0e7ff 0%, #f0f4f8 40%, #fce7f3 100%);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 36px 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .app-container {
+    width: 100%;
+    max-width: 880px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .header h1 {
+    font-family: 'DM Sans', 'Noto Sans SC', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+
+  .header .subtitle {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+  }
+
+  /* Navigation */
+  .nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: var(--bg-card);
+    border-radius: var(--radius-xl);
+    padding: 14px 24px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(255,255,255,0.8);
+    flex-wrap: wrap;
+  }
+
+  .nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    color: var(--accent-blue);
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    user-select: none;
+  }
+
+  .nav-btn:hover {
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(59,130,246,0.35);
+  }
+
+  .nav-btn:active { transform: translateY(0); }
+
+  .nav-btn svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+  }
+
+  .month-display {
+    font-family: 'DM Sans', 'Noto Sans SC', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.3px;
+    min-width: 140px;
+    text-align: center;
+  }
+
+  .month-display .year {
+    font-weight: 500;
+    color: var(--text-secondary);
+    font-size: 18px;
+    margin-right: 6px;
+  }
+
+  .today-btn {
+    padding: 8px 16px;
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .today-btn:hover {
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+    background: var(--accent-blue-light);
+  }
+
+  /* Month selector */
+  .month-select-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #eff6ff, #eef2ff);
+    border-radius: var(--radius-md);
+    padding: 4px;
+    border: 1px solid rgba(59,130,246,0.12);
+  }
+
+  .month-select {
+    padding: 9px 32px 9px 14px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: rgba(255,255,255,0.85);
+    color: var(--text-primary);
+    font-family: 'DM Sans', 'Noto Sans SC', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='%233b82f6'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  .month-select:hover {
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(59,130,246,0.15);
+  }
+
+  .month-select:focus {
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.18);
+  }
+
+  .select-divider {
+    width: 1px;
+    height: 24px;
+    background: rgba(59,130,246,0.15);
+    flex-shrink: 0;
+  }
+
+  /* Calendar Grid */
+  .calendar-wrapper {
+    background: var(--bg-card);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.8);
+  }
+
+  .weekday-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    border-bottom: 2px solid var(--border-light);
+  }
+
+  .weekday-cell {
+    text-align: center;
+    padding: 14px 0;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    letter-spacing: 2px;
+  }
+
+  .weekday-cell.weekend {
+    color: var(--color-weekend);
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    padding: 2px;
+  }
+
+  .day-cell {
+    border-radius: var(--radius-sm);
+    min-height: 92px;
+    padding: 8px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    transition: all 0.2s ease;
+    cursor: default;
+  }
+
+  .day-cell:not(.empty):hover {
+    transform: scale(1.04);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    z-index: 2;
+  }
+
+  .day-cell.empty {
+    background: transparent !important;
+    min-height: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  /* Day type background fills */
+  .day-cell.type-work {
+    background: linear-gradient(160deg, #dbeafe 0%, #bfdbfe 50%, #93c5fd 100%);
+  }
+
+  .day-cell.type-weekend {
+    background:
+      url('weekend-bg.jpg') center/cover no-repeat,
+      rgba(15, 23, 42, 0.78);
+  }
+
+  .day-cell.type-holiday {
+    background: linear-gradient(180deg, #fffbeb 0%, #fef3c7 100%);
+  }
+
+  .day-cell.type-adjust {
+    background: linear-gradient(180deg, #fff7ed 0%, #ffedd5 100%);
+  }
+
+  /* Alternating row tint for visual rhythm */
+  .day-cell.type-work.row-even {
+    background: linear-gradient(160deg, #bfdbfe 0%, #93c5fd 50%, #60a5fa 100%);
+  }
+
+  .day-cell.type-weekend.row-even {
+    background:
+      url('weekend-bg.jpg') center/cover no-repeat,
+      rgba(15, 23, 42, 0.82);
+  }
+
+  .day-number {
+    font-family: 'DM Sans', 'Noto Sans SC', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 4px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  .day-cell.type-work .day-number { color: var(--color-work); }
+  .day-cell.type-weekend .day-number { color: #ffffff; font-weight: 700; text-shadow: 0 1px 3px rgba(0,0,0,0.4); }
+  .day-cell.type-holiday .day-number { color: var(--color-holiday); }
+  .day-cell.type-adjust .day-number { color: var(--color-adjust); }
+
+  .day-cell.today .day-number {
+    background: linear-gradient(135deg, var(--color-today), #a78bfa);
+    color: #fff !important;
+    box-shadow: 0 3px 10px rgba(139,92,246,0.4);
+  }
+
+  .day-cell.today {
+    outline: 2.5px solid var(--color-today);
+    outline-offset: -1px;
+  }
+
+  .day-tag {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    line-height: 1.5;
+  }
+
+  .tag-work {
+    background: rgba(59,130,246,0.12);
+    color: #2563eb;
+  }
+
+  .tag-rest {
+    background: rgba(255,255,255,0.2);
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+
+  .tag-holiday {
+    background: rgba(245,158,11,0.15);
+    color: #d97706;
+  }
+
+  .tag-adjust {
+    background: rgba(249,115,22,0.15);
+    color: #ea580c;
+  }
+
+  .tag-xiaozhou {
+    background: rgba(249,115,22,0.15);
+    color: #ea580c;
+  }
+
+  /* Symbol indicators */
+  .symbol {
+    font-size: 13px;
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+
+  .sym-work { color: #60a5fa; }
+  .sym-rest { color: rgba(255,255,255,0.7); }
+  .sym-holiday { color: #fbbf24; }
+  .sym-adjust { color: #fb923c; }
+
+  /* Holiday name - base style */
+  .holiday-name {
+    font-size: 10px;
+    text-align: center;
+    line-height: 1.3;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 1px;
+    font-weight: 600;
+  }
+
+  /* Holiday name per type */
+  .holiday-name.on-work { color: #1e40af; }
+  .holiday-name.on-weekend { color: #ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+  .holiday-name.on-holiday { color: #92400e; }
+  .holiday-name.on-adjust { color: #9a3412; }
+  .holiday-name.on-type-note { color: #64748b; font-weight: 500; }
+
+  /* type-note background (light gray, no "rest" marker) */
+  .day-cell.type-note {
+    background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  }
+
+  /* Legend */
+  .legend-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 22px;
+    padding: 16px 24px;
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(255,255,255,0.8);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  /* Footer info */
+  .footer-info {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 400;
+    letter-spacing: 0.3px;
+  }
+
+  /* Countdown bar */
+  .countdown-bar {
+    text-align: center;
+    margin-bottom: 18px;
+    padding: 14px 20px;
+    background: linear-gradient(135deg, #fefce8, #fef9c3);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(250,204,21,0.3);
+  }
+  .countdown-bar .cd-label {
+    font-size: 13px;
+    color: #a16207;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .countdown-bar .cd-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ca8a04;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: -1px;
+  }
+  .countdown-bar .cd-value span {
+    font-size: 16px;
+    font-weight: 500;
+    margin-left: 2px;
+    color: #a16207;
+  }
+  .countdown-bar .cd-holiday-name {
+    font-size: 13px;
+    color: #854d0e;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+
+  /* Solar term */
+  .solar-term {
+    font-size: 9px;
+    color: #7c3aed;
+    text-align: center;
+    line-height: 1.3;
+    margin-top: 1px;
+    font-weight: 600;
+  }
+  .solar-term.on-holiday { color: #059669; }
+  .solar-term.on-adjust { color: #d97706; }
+
+  /* Note dot & modal */
+  .note-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ef4444;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+  }
+  .day-cell {
+    position: relative;
+    cursor: pointer;
+  }
+
+  /* Modal overlay */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal-box {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px 24px 20px;
+    width: 92%;
+    max-width: 380px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    animation: modalIn 0.25s ease;
+  }
+  @keyframes modalIn {
+    from { transform: translateY(20px) scale(0.96); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+  }
+  .modal-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a202c;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .modal-date {
+    font-size: 13px;
+    color: #64748b;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .modal-textarea {
+    width: 100%;
+    min-height: 100px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 14px;
+    font-family: 'Noto Sans SC', sans-serif;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s;
+    color: #1a202c;
+  }
+  .modal-textarea:focus { border-color: #3b82f6; }
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .modal-btn {
+    flex: 1;
+    padding: 10px 0;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Noto Sans SC', sans-serif;
+  }
+  .modal-btn-cancel {
+    background: #f1f5f9;
+    color: #64748b;
+  }
+  .modal-btn-cancel:hover { background: #e2e8f0; }
+  .modal-btn-save {
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    color: #fff;
+  }
+  .modal-btn-save:hover { opacity: 0.9; }
+  .modal-btn-delete {
+    background: #fef2f2;
+    color: #ef4444;
+  }
+  .modal-btn-delete:hover { background: #fee2e2; }
+  .modal-remind-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: #64748b;
+  }
+  .modal-remind-label {
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .modal-remind-select {
+    flex: 1;
+    padding: 8px 10px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: 'Noto Sans SC', sans-serif;
+    outline: none;
+    cursor: pointer;
+    background: #fff;
+    color: #334155;
+  }
+  .modal-remind-select:focus { border-color: #3b82f6; }
+  .modal-time-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: #64748b;
+  }
+  .modal-time-label {
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .modal-time-input {
+    padding: 8px 10px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: 'Noto Sans SC', sans-serif;
+    outline: none;
+    cursor: pointer;
+    background: #fff;
+    color: #334155;
+  }
+  .modal-time-input:focus { border-color: #3b82f6; }
+  .modal-existing {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: #334155;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    max-height: 120px;
+    overflow-y: auto;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    body { padding: 16px 8px; }
+    .header h1 { font-size: 24px; }
+    .month-display { font-size: 20px; min-width: 110px; }
+    .day-cell { min-height: 68px; padding: 5px 3px; }
+    .day-number { font-size: 15px; width: 28px; height: 28px; }
+    .day-tag { font-size: 8px; padding: 1px 4px; }
+    .symbol { font-size: 11px; }
+    .holiday-name { font-size: 8px; }
+    .legend-bar { gap: 12px; padding: 12px 16px; }
+    .legend-item { font-size: 11px; }
+    .nav-bar { padding: 10px 16px; gap: 10px; }
+    .nav-btn { padding: 8px 12px; font-size: 13px; }
+    .calendar-grid { gap: 1px; padding: 1px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app-container">
+  <div class="header">
+    <h1>公司大小周日历-ikun定制版</h1>
+    <div class="subtitle">2026 年度 &middot; 节假日调休智能标注</div>
+  </div>
+
+  <div class="countdown-bar" id="countdownBar">
+    <div class="cd-label">⏳ 距离下一个假期还有</div>
+    <div class="cd-value" id="countdownValue">--<span>天</span></div>
+    <div class="cd-holiday-name" id="countdownHolidayName"></div>
+  </div>
+
+  <div class="nav-bar">
+    <button class="nav-btn" onclick="changeMonth(-1)">
+      <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+      上月
+    </button>
+    <button class="today-btn" onclick="goToday()">回到今天</button>
+    <div class="month-select-group">
+      <select class="month-select" id="yearSelect" onchange="jumpToDate()"></select>
+      <div class="select-divider"></div>
+      <select class="month-select" id="monthSelect" onchange="jumpToDate()"></select>
+    </div>
+    <button class="nav-btn" onclick="changeMonth(1)">
+      下月
+      <svg viewBox="0 0 24 24"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
+    </button>
+  </div>
+
+  <div class="calendar-wrapper">
+    <div class="weekday-header">
+      <div class="weekday-cell">一</div>
+      <div class="weekday-cell">二</div>
+      <div class="weekday-cell">三</div>
+      <div class="weekday-cell">四</div>
+      <div class="weekday-cell">五</div>
+      <div class="weekday-cell weekend">六</div>
+      <div class="weekday-cell weekend">日</div>
+    </div>
+    <div class="calendar-grid" id="calendarGrid"></div>
+  </div>
+
+  <div class="legend-bar">
+    <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(135deg,#eff6ff,#dbeafe)"></div>工作日</div>
+    <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(135deg,#f8fafc,#f1f5f9)"></div>休息日</div>
+    <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(135deg,#fffbeb,#fef3c7)"></div>法定节假日</div>
+    <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(135deg,#fff7ed,#ffedd5)"></div>调休/小周班</div>
+    <div class="legend-item"><div class="legend-dot" style="background:linear-gradient(135deg,#8b5cf6,#a78bfa); border-radius:50%"></div>今天</div>
+  </div>
+
+  <div class="footer-info">
+  </div>
+</div>
+
+<script>
+// ========================
+// 2026 年节假日数据
+// ========================
+const holidays2026 = {
+  '2026-01-01': { type: 'holiday', name: '元旦' },
+  '2026-01-02': { type: 'holiday', name: '元旦' },
+  '2026-01-03': { type: 'holiday', name: '元旦' },
+  '2026-02-17': { type: 'holiday', name: '除夕' },
+  '2026-02-18': { type: 'holiday', name: '春节' },
+  '2026-02-19': { type: 'holiday', name: '春节' },
+  '2026-02-20': { type: 'holiday', name: '春节' },
+  '2026-02-21': { type: 'holiday', name: '春节' },
+  '2026-02-22': { type: 'holiday', name: '春节' },
+  '2026-02-23': { type: 'holiday', name: '春节' },
+  '2026-03-01': { type: 'note', name: '龙抬头' },
+  '2026-03-03': { type: 'note', name: '元宵节' },
+  '2026-03-08': { type: 'note', name: '妇女节' },
+  '2026-03-12': { type: 'note', name: '植树节' },
+  '2026-04-05': { type: 'holiday', name: '清明' },
+  '2026-04-06': { type: 'holiday', name: '清明' },
+  '2026-04-07': { type: 'holiday', name: '清明' },
+  '2026-05-01': { type: 'holiday', name: '劳动节' },
+  '2026-05-02': { type: 'holiday', name: '劳动节' },
+  '2026-05-03': { type: 'holiday', name: '劳动节' },
+  '2026-05-04': { type: 'holiday', name: '劳动节' },
+  '2026-05-05': { type: 'adjust', name: '调休上班' },
+  '2026-05-09': { type: 'adjust', name: '调休上班' },
+  '2026-05-12': { type: 'note', name: '护士节' },
+  '2026-06-01': { type: 'note', name: '儿童节' },
+  '2026-06-19': { type: 'holiday', name: '端午' },
+  '2026-06-20': { type: 'holiday', name: '端午' },
+  '2026-06-21': { type: 'holiday', name: '端午' },
+  '2026-08-20': { type: 'note', name: '七夕' },
+  '2026-08-28': { type: 'note', name: '中元节' },
+  '2026-09-12': { type: 'holiday', name: '中秋' },
+  '2026-09-13': { type: 'holiday', name: '中秋' },
+  '2026-09-14': { type: 'holiday', name: '中秋' },
+  '2026-10-01': { type: 'holiday', name: '国庆' },
+  '2026-10-02': { type: 'holiday', name: '国庆' },
+  '2026-10-03': { type: 'holiday', name: '国庆' },
+  '2026-10-04': { type: 'holiday', name: '国庆' },
+  '2026-10-05': { type: 'holiday', name: '国庆' },
+  '2026-10-06': { type: 'holiday', name: '国庆' },
+  '2026-10-07': { type: 'holiday', name: '国庆' },
+  '2026-10-10': { type: 'adjust', name: '调休上班' },
+  '2026-10-29': { type: 'note', name: '重阳节' },
+  '2026-12-25': { type: 'note', name: '圣诞节' },
+};
+
+// State - initialized to today's date
+let _today = new Date();
+let currentYear = _today.getFullYear();
+let currentMonth = _today.getMonth(); // 0-indexed
+let _todayDateStr = _today.getFullYear() + '-' + (_today.getMonth()+1) + '-' + _today.getDate();
+
+function checkDateChange() {
+  const now = new Date();
+  const todayStr = now.getFullYear() + '-' + (now.getMonth()+1) + '-' + now.getDate();
+  if (todayStr !== _todayDateStr) {
+    // Date changed (past midnight)
+    _today = now;
+    _todayDateStr = todayStr;
+    currentYear = now.getFullYear();
+    currentMonth = now.getMonth();
+    renderCalendar();
+  }
+}
+setInterval(checkDateChange, 60000); // check every 60 seconds
+
+// ========== Solar Terms 2026 ==========
+const solarTerms2026 = {
+  "2026-01-05": "小寒", "2026-01-20": "大寒",
+  "2026-02-04": "立春", "2026-02-19": "雨水",
+  "2026-03-06": "惊蛰", "2026-03-21": "春分",
+  "2026-04-05": "清明", "2026-04-20": "谷雨",
+  "2026-05-05": "立夏", "2026-05-21": "小满",
+  "2026-06-05": "芒种", "2026-06-21": "夏至",
+  "2026-07-07": "小暑", "2026-07-23": "大暑",
+  "2026-08-07": "立秋", "2026-08-23": "处暑",
+  "2026-09-07": "白露", "2026-09-23": "秋分",
+  "2026-10-08": "寒露", "2026-10-23": "霜降",
+  "2026-11-07": "立冬", "2026-11-22": "小雪",
+  "2026-12-07": "大雪", "2026-12-22": "冬至"
+};
+
+// (cloud sync removed per user request 2026-06-02)
+
+// ========== Notes (localStorage) ==========
+let currentNoteDate = null;
+function openModal(dateKey, displayStr) {
+  currentNoteDate = dateKey;
+  document.getElementById('modalDate').textContent = displayStr;
+  const notes = JSON.parse(localStorage.getItem('calendar_notes') || '{}');
+  const existing = notes[dateKey];
+  const input = document.getElementById('modalInput');
+  const existingDiv = document.getElementById('modalExisting');
+  const deleteBtn = document.getElementById('modalDelete');
+  const remindSel = document.getElementById('modalRemind');
+  const timeInput = document.getElementById('modalTime');
+  if (existing) {
+    input.value = existing.text || '';
+    remindSel.value = existing.remind || '';
+    timeInput.value = existing.time || '09:00';
+    existingDiv.style.display = 'block';
+    existingDiv.textContent = existing.text || '';
+    deleteBtn.style.display = 'block';
+  } else {
+    input.value = '';
+    remindSel.value = '';
+    timeInput.value = '09:00';
+    existingDiv.style.display = 'none';
+    deleteBtn.style.display = 'none';
+  }
+  document.getElementById('noteModal').classList.add('active');
+  input.focus();
+}
+function closeModal() {
+  document.getElementById('noteModal').classList.remove('active');
+  currentNoteDate = null;
+}
+function saveNote() {
+  const text = document.getElementById('modalInput').value.trim();
+  const remind = document.getElementById('modalRemind').value;
+  const timeVal = document.getElementById('modalTime').value || '09:00';
+  if (!currentNoteDate) return;
+  const notes = JSON.parse(localStorage.getItem('calendar_notes') || '{}');
+  if (text || remind) {
+    const [y, m, d] = currentNoteDate.split('-').map(Number);
+    const [h, min] = timeVal.split(':').map(Number);
+    let remindAt = null;
+    if (remind) {
+      const offsetMins = parseInt(remind);
+      const base = new Date(y, m-1, d, h, min, 0, 0);
+      remindAt = new Date(base.getTime() - offsetMins * 60000).toISOString();
+    }
+    notes[currentNoteDate] = { text: text, time: timeVal, remind: remind || null, remindAt: remindAt };
+  } else {
+    delete notes[currentNoteDate];
+  }
+  localStorage.setItem('calendar_notes', JSON.stringify(notes));
+  closeModal();
+  renderCalendar();
+}
+function deleteNote() {
+  if (!currentNoteDate) return;
+  const notes = JSON.parse(localStorage.getItem('calendar_notes') || '{}');
+  delete notes[currentNoteDate];
+  localStorage.setItem('calendar_notes', JSON.stringify(notes));
+  closeModal();
+  renderCalendar();
+}
+// Close modal on overlay click
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('modal-overlay')) closeModal();
+});
+
+// ========== Check reminders on load ==========
+function checkReminders() {
+  const notes = JSON.parse(localStorage.getItem('calendar_notes') || '{}');
+  const now = new Date();
+  let found = false;
+  for (const [dateKey, note] of Object.entries(notes)) {
+    if (note.remindAt) {
+      const remindTime = new Date(note.remindAt);
+      if (remindTime <= now) {
+        // Trigger reminder
+        found = true;
+        const msg = `⏰ 提醒：${dateKey}\n${note.text}`;
+        if (Notification.permission === 'granted') {
+          new Notification('日历提醒', { body: note.text, tag: dateKey });
+        } else {
+          alert(msg);
+        }
+        // Clear this reminder so it doesn't fire again
+        note.remindAt = null;
+        note.remind = null;
+      }
+    }
+  }
+  if (found) {
+    localStorage.setItem('calendar_notes', JSON.stringify(notes));
+    // Play a sound
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      [520, 660, 780].forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.frequency.value = freq;
+        gain.gain.value = 0.15;
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(ctx.currentTime + i * 0.15);
+        osc.stop(ctx.currentTime + i * 0.15 + 0.12);
+      });
+    } catch(e) {}
+  }
+}
+// Check reminders every 30 seconds while page is open
+setInterval(checkReminders, 30000);
+// Also check on load
+setTimeout(checkReminders, 1000);
+
+// ========== Countdown to next holiday ==========
+const holidayList2026 = [
+  { date: "2026-01-01", name: "元旦" },
+  { date: "2026-02-17", name: "春节" },
+  { date: "2026-04-05", name: "清明节" },
+  { date: "2026-05-01", name: "劳动节" },
+  { date: "2026-06-19", name: "端午节" },
+  { date: "2026-10-01", name: "国庆节/中秋节" }
+];
+function updateCountdown() {
+  const now = new Date();
+  const todayStr = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+  let nextHoliday = null;
+  for (const h of holidayList2026) {
+    if (h.date >= todayStr) {
+      nextHoliday = h;
+      break;
+    }
+  }
+  const cdVal = document.getElementById('countdownValue');
+  const cdName = document.getElementById('countdownHolidayName');
+  if (!nextHoliday) {
+    cdVal.innerHTML = '0<span>天</span>';
+    cdName.textContent = '今年假期已结束';
+    return;
+  }
+  const target = new Date(nextHoliday.date + 'T00:00:00');
+  const diffMs = target - now;
+  const diffDays = Math.ceil(diffMs / 86400000);
+  cdVal.innerHTML = diffDays + '<span>天</span>';
+  cdName.textContent = nextHoliday.name + '（' + nextHoliday.date + '）';
+}
+
+function initSelectors() {
+  const yearSel = document.getElementById('yearSelect');
+  const monthSel = document.getElementById('monthSelect');
+  // Year range 2000-2050
+  for (let y = 2000; y <= 2050; y++) {
+    const opt = document.createElement('option');
+    opt.value = y;
+    opt.textContent = y + '年';
+    yearSel.appendChild(opt);
+  }
+  // Months
+  const monthNames = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+  for (let m = 0; m < 12; m++) {
+    const opt = document.createElement('option');
+    opt.value = m;
+    opt.textContent = monthNames[m];
+    monthSel.appendChild(opt);
+  }
+  syncSelectors();
+}
+
+function syncSelectors() {
+  document.getElementById('yearSelect').value = currentYear;
+  document.getElementById('monthSelect').value = currentMonth;
+}
+
+function jumpToDate() {
+  currentYear = parseInt(document.getElementById('yearSelect').value);
+  currentMonth = parseInt(document.getElementById('monthSelect').value);
+  renderCalendar();
+}
+
+function getDateKey(y, m, d) {
+  return `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+}
+
+function getISOWeek(date) {
+  // Use Monday-based continuous week count from the first Monday of the year
+  const y = date.getFullYear();
+  const jan1 = new Date(y, 0, 1);
+  const jan1Dow = jan1.getDay(); // 0=Sun, 1=Mon, ...
+  // Find first Monday of the year
+  const firstMonday = new Date(y, 0, 1 + ((8 - jan1Dow) % 7));
+  const d = new Date(y, date.getMonth(), date.getDate());
+  const diff = (d - firstMonday) / (7 * 86400000);
+  return Math.floor(diff) + 1; // 1-indexed, week 1 starts from first Monday
+}
+
+function isDaZhou(isoWeek) {
+  return isoWeek % 2 === 0;
+}
+
+function changeMonth(delta) {
+  currentMonth += delta;
+  if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+  if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+  renderCalendar();
+}
+
+function goToday() {
+  _today = new Date();
+  _todayDateStr = _today.getFullYear() + '-' + (_today.getMonth()+1) + '-' + _today.getDate();
+  currentYear = _today.getFullYear();
+  currentMonth = _today.getMonth();
+  renderCalendar();
+}
+
+function renderCalendar() {
+  syncSelectors();
+
+  const grid = document.getElementById('calendarGrid');
+  grid.innerHTML = '';
+
+  const firstDay = new Date(currentYear, currentMonth, 1);
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+  let startDow = firstDay.getDay() - 1;
+  if (startDow < 0) startDow = 6;
+
+  const today = new Date();
+  const todayKey = getDateKey(today.getFullYear(), today.getMonth(), today.getDate());
+
+  for (let i = 0; i < startDow; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'day-cell empty';
+    grid.appendChild(cell);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(currentYear, currentMonth, d);
+    const dateKey = getDateKey(currentYear, currentMonth, d);
+    const dow = date.getDay();
+    const isWeekend = dow === 0 || dow === 6;
+    const isoWeek = getISOWeek(date);
+    const daZhou = isDaZhou(isoWeek);
+    const holidayInfo = holidays2026[dateKey];
+    const isToday = dateKey === todayKey;
+
+    // Row index for alternating shading
+    const dayIndex = startDow + d - 1;
+    const rowIdx = Math.floor(dayIndex / 7);
+    const isEvenRow = rowIdx % 2 === 1;
+
+    const cell = document.createElement('div');
+    let typeClass = 'type-work';
+    let symbol = '<span class="symbol sym-work">&#9679;</span>';
+    let tag = '';
+    let holidayName = '';
+
+    if (holidayInfo) {
+      if (holidayInfo.type === 'holiday') {
+        typeClass = 'type-holiday';
+        symbol = '<span class="symbol sym-holiday">&#9733;</span>';
+        tag = '<span class="day-tag tag-holiday">休</span>';
+        holidayName = holidayInfo.name;
+      } else if (holidayInfo.type === 'adjust') {
+        typeClass = 'type-adjust';
+        symbol = '<span class="symbol sym-adjust">&#9650;</span>';
+        tag = '<span class="day-tag tag-adjust">调休上班</span>';
+        holidayName = holidayInfo.name;
+      } else if (holidayInfo.type === 'note') {
+        // 普通标注：只显示名字，不标休
+        typeClass = 'type-note';
+        holidayName = holidayInfo.name;
+      }
+    } else if (isWeekend) {
+      if (!daZhou && dow === 6) {
+        typeClass = 'type-adjust';
+        symbol = '<span class="symbol sym-adjust">&#9650;</span>';
+        tag = '<span class="day-tag tag-xiaozhou">小周班</span>';
+      } else {
+        typeClass = 'type-weekend';
+        symbol = '<span class="symbol sym-rest">&#8212;</span>';
+        tag = '<span class="day-tag tag-rest">休</span>';
+      }
+    } else {
+      tag = '<span class="day-tag tag-work">班</span>';
+    }
+
+    // Note dot (after typeClass is known)
+    const notes = JSON.parse(localStorage.getItem('calendar_notes') || '{}');
+    const hasNote = notes[dateKey] && (notes[dateKey].text || notes[dateKey].remind);
+    const noteDot = hasNote ? '<div class="note-dot"></div>' : '';
+
+    // Solar term (after typeClass is known)
+    const solarTerm = solarTerms2026 ? solarTerms2026[dateKey] : null;
+    const solarTermHtml = solarTerm ? `<div class="solar-term on-${typeClass}">${solarTerm}</div>` : '';
+
+    let classes = `day-cell ${typeClass}`;
+    if (isEvenRow) classes += ' row-even';
+    if (isToday) classes += ' today';
+    cell.className = classes;
+
+    cell.innerHTML = `
+      ${symbol}
+      ${noteDot}
+      <div class="day-number">${d}</div>
+      ${tag}
+      ${holidayName ? `<div class="holiday-name on-${typeClass}">${holidayName}</div>` : ''}
+      ${solarTermHtml}
+    `;
+
+    grid.appendChild(cell);
+    cell.onclick = () => openModal(dateKey, currentYear + "年" + (currentMonth+1) + "月" + d + "日");
+  }
+
+  updateCountdown();
+
+  const totalCells = startDow + daysInMonth;
+  const remaining = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+  for (let i = 0; i < remaining; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'day-cell empty';
+    grid.appendChild(cell);
+  }
+}
+
+initSelectors();
+renderCalendar();
+updateCountdown();
+</script>
+
+<!-- Note Modal -->
+<div class="modal-overlay" id="noteModal">
+  <div class="modal-box">
+    <div class="modal-title">📝 添加备注</div>
+    <div class="modal-date" id="modalDate"></div>
+    <div class="modal-existing" id="modalExisting" style="display:none;"></div>
+    <div class="modal-time-row">
+      <label class="modal-time-label">🕐 时间：</label>
+      <input type="time" class="modal-time-input" id="modalTime" value="09:00">
+    </div>
+    <div class="modal-remind-row">
+      <label class="modal-remind-label">⏰ 提醒：</label>
+      <select class="modal-remind-select" id="modalRemind">
+        <option value="">不提醒</option>
+        <option value="0">准时提醒</option>
+        <option value="30">提前 30 分钟</option>
+        <option value="60">提前 1 小时</option>
+        <option value="1440">提前 1 天</option>
+      </select>
+    </div>
+    <textarea class="modal-textarea" id="modalInput" placeholder="写点备注..."></textarea>
+    <div class="modal-actions">
+      <button class="modal-btn modal-btn-delete" id="modalDelete" onclick="deleteNote()">删除</button>
+      <button class="modal-btn modal-btn-cancel" onclick="closeModal()">取消</button>
+      <button class="modal-btn modal-btn-save" onclick="saveNote()">保存</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
